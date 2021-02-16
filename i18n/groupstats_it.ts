@@ -103,7 +103,7 @@
     <message>
         <location filename="../GroupStatsDialog.py" line="486"/>
         <source>No data to save/copy</source>
-        <translation>Nessun data da salvare/copiare</translation>
+        <translation>Nessun dato da salvare/copiare</translation>
     </message>
     <message>
         <location filename="../GroupStatsDialog.py" line="770"/>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../GroupStatsDialog.py" line="711"/>
         <source>Function can be dropped in only one area</source>
-        <translation type="unfinished"></translation>
+        <translation>Puoi trascinare la funzione in una sola area</translation>
     </message>
 </context>
 <context>
