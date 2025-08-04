@@ -23,6 +23,7 @@ icon=icon.png
 
 experimental=False
 deprecated=False
+supportsQt6=True
 
 # Author contact information
 author=Rajmund Szostok. Migrated to QGIS 3 by Borys Jurgiel and Faunalia. Code translated to English by Henrik Spångmyr.

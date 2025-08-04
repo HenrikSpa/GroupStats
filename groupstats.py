@@ -22,9 +22,9 @@
 
 import os.path
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QAction, QMessageBox
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import QAction, QMessageBox
 
 
 from qgis.core import *
