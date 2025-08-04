@@ -73,7 +73,7 @@ class GroupStats:
     def run(self):
         if self.dlg is None:
             # Create the dialog and keep reference
-            self.dlg = GroupStatsDialog()
+            self.dlg = GroupStatsDialog(self.iface.mainWindow())
 
         mapLayers = QgsProject.instance().mapLayers()        # Load layers dictionary from the project
         layerList = []
