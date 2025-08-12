@@ -32,7 +32,7 @@ changelog=
     2.2.7    Fixes bug when "Show selected on map" isn't working (fixes #13) (patch by TurboGraphxBeige).
              Fixes bug where reported calculation progress exceeded 100 percent.
              Fixes sorting bug for fields with mixed strings and floats (fixes #12).
-             Adjusted sort to put None, '' and NaN-values last.
+             Adjusted sort to put None, '' and NaN-values last..
     2.2.6    Added support for virtual fields (fixes #10)
     2.2.5    New feature "Copy cell content", patch by TurboGraphxBeige.
     2.2.4    Added more tooltips. Patch by Sylvain POULAIN.
