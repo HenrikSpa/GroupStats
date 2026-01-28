@@ -1,3 +1,4 @@
+"""HenrikSpa: These tests should work with QT6."""
 from qgis.core import QgsProject, QgsVectorLayer, QgsField, QgsFeature, QgsFields, QgsGeometry
 from qgis.PyQt.QtCore import QMetaType, QModelIndex
 from qgis.PyQt.QtWidgets import QApplication
@@ -27,8 +28,10 @@ class TestGroupStats(object):
 
     def tearDown(self):
         QgsProject.instance().clear()
-        self.gs.dlg.close()
-        self.gs = None
+        if hasattr(self, 'gs'):
+            if self.gs is not None:
+                self.gs.dlg.close()
+            self.gs = None
 
     def create_vectorlayer(self, _fields, data, geometries=None, geomtype='Point'):
         self.vlayer = QgsVectorLayer("{}?crs=epsg:4326".format(geomtype), "test", "memory")

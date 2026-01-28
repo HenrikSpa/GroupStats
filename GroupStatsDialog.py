@@ -119,7 +119,7 @@ class GroupStatsDialog(QMainWindow):
         elif value[0]=='attributeTxt':
             valueFunction = lambda _object: None if _object.attribute(value[1]) is None else _object.attribute(value[1])#.toString()    # text attribute
         elif value[0]=='countAttributes':
-            valueFunction = lambda _object: None if _object.attribute(value[1]) is None else float(_object.attribute(value[1]))
+            valueFunction = lambda _object: value_attribute_func(value[1], _object)
 
         index = self.ui.layer.currentIndex()                                             # Download chosen layer
         layerId = self.ui.layer.itemData(index)
@@ -1120,3 +1120,18 @@ class Calculations(QObject):                   # finished
     def unique(self, result):
         return len(set(result))
 
+
+def value_attribute_func(value, _object):
+    if _object.attribute(value) is None:
+        return None
+    try:
+        return float(_object.attribute(value))
+    except TypeError:
+        # Fix for QT5 QVariant-problem.
+        if isinstance(_object.attribute(value), QVariant) and _object.attribute(value).isNull():
+            return None
+        else:
+            if isinstance(_object.attribute(value), QVariant):
+                return float(_object.attribute(value).value())
+            else:
+                return float(_object.attribute(value))

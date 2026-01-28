@@ -8,7 +8,7 @@ about=
 
  Migrato alla versione QGIS3 da Faunalia per Arpa Piemonte per il programma ERIKUS in collaborazione con Regione Piemonte e Dipartimento della Protezione Civile - Funzione Censimento Danni
 
-version=2.2.7
+version=3.0.0
 qgisMinimumVersion=3.0
 
 # tags are comma separated with spaces allowed
@@ -30,6 +30,7 @@ author=Rajmund Szostok. Migrated to QGIS 3 by Borys Jurgiel and Faunalia. Code t
 email=henrik.spangmyr@midvatten.se
 
 changelog=
+    3.0.0    Support for QT6. Patch by freeshrugsxd.
     2.2.7    Fixes bug when "Show selected on map" isn't working (fixes #13) (patch by TurboGraphxBeige).
              Fixes bug where reported calculation progress exceeded 100 percent.
              Fixes sorting bug for fields with mixed strings and floats (fixes #12).
