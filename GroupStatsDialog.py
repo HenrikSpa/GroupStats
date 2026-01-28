@@ -9,10 +9,10 @@ import math
 import webbrowser
 from math import *
 
-from PyQt5 import uic
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QTableView, QWidget, QMenu, QAction
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QTableView, QWidget, QMenu, QAction
 
 from qgis.core import *
 from qgis.gui import *
@@ -119,10 +119,7 @@ class GroupStatsDialog(QMainWindow):
         elif value[0]=='attributeTxt':
             valueFunction = lambda _object: None if _object.attribute(value[1]) is None else _object.attribute(value[1])#.toString()    # text attribute
         elif value[0]=='countAttributes':
-            valueFunction = lambda _object: None if _object.attribute(value[1]) is None or (
-                    isinstance(_object.attribute(value[1]), QVariant) and
-                    _object.attribute(value[1]).isNull()) else (float(_object.attribute(value[1]).value())
-                    if isinstance(_object.attribute(value[1]), QVariant) else float(_object.attribute(value[1])))
+            valueFunction = lambda _object: None if _object.attribute(value[1]) is None else float(_object.attribute(value[1]))
 
         index = self.ui.layer.currentIndex()                                             # Download chosen layer
         layerId = self.ui.layer.itemData(index)
@@ -284,9 +281,9 @@ class GroupStatsDialog(QMainWindow):
             self.tm5 = ResultModel(data, rows1, columns1, layer)
             self.ui.result.setModel(self.tm5)
             for i in range(len(columns1[0]),0,-1):
-                self.ui.result.verticalHeader().setSortIndicator( i-1, Qt.AscendingOrder )
+                self.ui.result.verticalHeader().setSortIndicator( i-1, Qt.SortOrder.AscendingOrder )
             for i in range(len(rows1[0]),0,-1):
-                self.ui.result.horizontalHeader().setSortIndicator( i-1, Qt.AscendingOrder )
+                self.ui.result.horizontalHeader().setSortIndicator( i-1, Qt.SortOrder.AscendingOrder )
             statement = self.statusBar().currentMessage()
             percent = 100.00 / self.tm5.columnCount()
             counter = 0
@@ -425,7 +422,7 @@ class GroupStatsDialog(QMainWindow):
         text = self.ui._filter.toPlainText()                                                 # Retrieve the text from the window and display the query window
         q = QgsSearchQueryBuilder(layer)
         q.setSearchString(text)
-        q.exec_()
+        q.exec()
 
         self.ui._filter.setPlainText(q.searchString ())                                       # Insert a query into the window
 
@@ -460,10 +457,10 @@ class GroupStatsDialog(QMainWindow):
     def saveFileData (self, data):
         "Support for writing data to a file"
         fileWindow = QFileDialog()                                              # Select file to write
-        fileWindow.setAcceptMode(1)
+        fileWindow.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         fileWindow.setDefaultSuffix("csv")
         fileWindow.setNameFilters(["CSV files (*.csv)", "All files (*)"])
-        if fileWindow.exec_() == 0:                                             # No file selected - output
+        if fileWindow.exec() == 0:                                             # No file selected - output
             return
         fileName = fileWindow.selectedFiles()[0]
         _file = open(fileName, 'w')                                            # Open file for writing
@@ -529,7 +526,7 @@ class GroupStatsDialog(QMainWindow):
         indexList = self.ui.result.selectedIndexes()                                    # Retrieve the indexes of the selected fields
         idList = []
         for i in indexList:                                                             # Get object indexes to show
-            lista = i.data(Qt.UserRole)#.toList()
+            lista = i.data(Qt.ItemDataRole.UserRole)#.toList()
             if lista == None:                                                               # Reject lines with headers
                 lista = ()
             for j in lista:
@@ -563,12 +560,12 @@ class ModelList(QAbstractListModel):
         return len(self._data)
 
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if not index.isValid() or not 0 <= index.row() < self.rowCount():
             return None#QVariant()
 
         row = index.row()
-        if role == Qt.DisplayRole:
+        if role == Qt.ItemDataRole.DisplayRole:
             return self._data[row][1]
 
         #elif rola == Qt.ForegroundRole:
@@ -584,7 +581,7 @@ class ModelList(QAbstractListModel):
         #    pedzel = QBrush(kolor)
         #    return pedzel
 
-        elif role == Qt.DecorationRole:
+        elif role == Qt.ItemDataRole.DecorationRole:
             if self._data[row][0] == 'geometry':
                 icon = QIcon(":/plugins/groupstats/icons/geom.png")
             elif self._data[row][0] == 'calculations':
@@ -604,11 +601,11 @@ class ModelList(QAbstractListModel):
 
 
     def supportedDragActions(self):
-        return Qt.MoveAction
+        return Qt.DropAction.MoveAction
 
 
     def supportedDropActions(self):
-        return Qt.MoveAction
+        return Qt.DropAction.MoveAction
 
 
     def insertRows(self, row, number, index, data):
@@ -629,7 +626,7 @@ class ModelList(QAbstractListModel):
     def mimeData(self, indexy, typMime='application/x-groupstats-polaL'):
         dataMime = QMimeData()
         data = QByteArray()
-        stream = QDataStream(data, QIODevice.WriteOnly)
+        stream = QDataStream(data, QIODevice.OpenModeFlag.WriteOnly)
         for index in indexy:
             row = index.row()
             stringg = pickle.dumps(self._data[row][2])
@@ -649,9 +646,9 @@ class ModelList(QAbstractListModel):
         flag = super(ModelList, self).flags(index)
 
         if index.isValid():
-            return flag | Qt.ItemIsDragEnabled | Qt.ItemIsEnabled | Qt.ItemIsSelectable
+            return flag | Qt.ItemFlag.ItemIsDragEnabled | Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
         else:
-            return Qt.ItemIsDropEnabled
+            return Qt.ItemFlag.ItemIsDropEnabled
 
 
 class ModelRowsColumns(ModelList):
@@ -690,7 +687,7 @@ class ModelRowsColumns(ModelList):
 
         data = dataMime.data(dataType)
 
-        stream = QDataStream(data, QIODevice.ReadOnly)
+        stream = QDataStream(data, QIODevice.OpenModeFlag.ReadOnly)
         outData = []
         while not stream.atEnd():
             #typ = ''#QString() --------------------------------???????????????????????????????????????
@@ -746,7 +743,7 @@ class ValueModel(ModelList):
             return False
 
         data = dataMime.data(dataType)
-        stream = QDataStream(data, QIODevice.ReadOnly)
+        stream = QDataStream(data, QIODevice.OpenModeFlag.ReadOnly)
         outData = []
         while not stream.atEnd():
             #typ = '2'#QString()-------------------------------------????????????????????????????
@@ -839,14 +836,14 @@ class ResultModel(QAbstractTableModel):     # finished
     def rowCount(self, parent=QModelIndex()):
         return max(2, len(self.rows) + len(self.columns[0]))
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if not index.isValid() or not 0 <= index.row() < self.rowCount():
             return None
 
         row = index.row() - self.offsetY
         column = index.column() - self.offsetX
 
-        if role == Qt.DisplayRole:
+        if role == Qt.ItemDataRole.DisplayRole:
             if row >=0 and column >=0:                                      # Data
                 return self._data[row][column][0]
             elif column < 0 and row >= 0 and len(self.rows[0])>0:        # descriptions of rows
@@ -862,11 +859,11 @@ class ResultModel(QAbstractTableModel):     # finished
                 else:
                     return self.columns[column + 1][row]                      # descriptions and column names if there is no gap line
 
-        elif role == Qt.UserRole:
+        elif role == Qt.ItemDataRole.UserRole:
             if row >=0 and column >=0:                                      # Data
                 return self._data[row][column][1]
 
-        elif role == Qt.UserRole+1:
+        elif role == Qt.ItemDataRole.UserRole+1:
             #print "user role+1"
             if row <0 and column >=0:                                      # column, row or data
                 return "column"
@@ -875,21 +872,21 @@ class ResultModel(QAbstractTableModel):     # finished
             elif row >=0 and column >=0:
                 return "data"
 
-        elif role == Qt.BackgroundRole:                                         # Cell filling
+        elif role == Qt.ItemDataRole.BackgroundRole:                                         # Cell filling
             if row<0 or column<0:                                           # gray for cells with descriptions and namesi
                 colour = QColor(245,235,235)
                 brush = QBrush(colour)
                 return brush
 
-        elif role == Qt.TextAlignmentRole:
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
             if column < 0 and row < -1 and len(self.rows[0]) != 0:
-                return Qt.AlignRight | Qt.AlignVCenter
+                return Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
             elif column >= 0 and row < 0:
-                return Qt.AlignHCenter | Qt.AlignVCenter
+                return Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
             elif column >= 0 and row >= 0:
-                return Qt.AlignRight | Qt.AlignVCenter
+                return Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
 
-        elif role == Qt.FontRole:
+        elif role == Qt.ItemDataRole.FontRole:
             if row<0 and column<0:
                 font = QFont()
                 font.setBold(True)
@@ -1035,11 +1032,11 @@ class WindowResults(QTableView, QMenu):
         flag = super(WindowResults, self).selectionCommand(index, event)        # calling the original method
         test = None        
         if self.model():
-            test = self.model().data(index, Qt.UserRole+1)                         # checking the selected cell type
+            test = self.model().data(index, Qt.ItemDataRole.UserRole+1)                         # checking the selected cell type
         if test == "row":
-            return flag | QItemSelectionModel.Rows
+            return flag | QItemSelectionModel.SelectionFlag.Rows
         elif test == "column":
-            return flag | QItemSelectionModel.Columns
+            return flag | QItemSelectionModel.SelectionFlag.Columns
         else:
             return flag
 
@@ -1048,7 +1045,7 @@ class WindowResults(QTableView, QMenu):
         """
         Select or deselect all data when clicked in the corner of the table
         """
-        test = self.model().data(index, Qt.UserRole+1)                      # checking the selected cell type
+        test = self.model().data(index, Qt.ItemDataRole.UserRole+1)                      # checking the selected cell type
         if test not in ("data", "row", "column"):                           # checking if the corner
             if self.selectionModel().isSelected(index):                        # if the corner is selected, it also marks all dataa
                 self.selectAll()

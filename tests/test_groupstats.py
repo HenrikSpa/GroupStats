@@ -1,11 +1,11 @@
 from qgis.core import QgsProject, QgsVectorLayer, QgsField, QgsFeature, QgsFields, QgsGeometry
-from PyQt5.QtCore import QVariant, QModelIndex
-from PyQt5.QtWidgets import QApplication
+from qgis.PyQt.QtCore import QMetaType, QModelIndex
+from qgis.PyQt.QtWidgets import QApplication
 import mock
 from mock import call
 from io import TextIOBase
 from GroupStats.groupstats import GroupStats
-from PyQt5.QtCore import Qt
+from qgis.PyQt.QtCore import Qt
 
 class TestGroupStats(object):
     """
@@ -86,10 +86,10 @@ class TestGroupStats(object):
         self.result_table = self.gs.dlg.ui.result
 
     def test_all_unique(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row2', 'col1', 2.0], [3, 'row3', 'col1', 3.0], [4, 'row4', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -112,10 +112,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(sum_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -138,10 +138,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_sum(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -164,10 +164,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -188,10 +188,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_average(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -214,10 +214,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -238,10 +238,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_min(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -264,10 +264,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -288,10 +288,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_max(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -314,10 +314,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -338,10 +338,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_count(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -364,10 +364,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -388,10 +388,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_median(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0],
                 [5, 'row2', 'col1', 8.0]]
         self.create_vectorlayer(_fields, data)
@@ -415,10 +415,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -439,10 +439,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_variance(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 6.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -465,10 +465,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -489,10 +489,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_stdev(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 6.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -515,10 +515,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -539,10 +539,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_geom_polygon_area_sum(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 6.0]]
         geometries = [QgsGeometry.fromWkt('POLYGON((1.0 1.0, 2.0 1.0, 2.0 0.0, 1.0 0.0, 1.0 1.0))'),
                       QgsGeometry.fromWkt('POLYGON((1.0 1.0, 3.0 1.0, 3.0 0.0, 1.0 0.0, 1.0 1.0))'),
@@ -569,10 +569,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -593,10 +593,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_geom_perimeter_sum(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 6.0]]
         geometries = [QgsGeometry.fromWkt('POLYGON((1.0 1.0, 2.0 1.0, 2.0 0.0, 1.0 0.0, 1.0 1.0))'),
                       QgsGeometry.fromWkt('POLYGON((1.0 1.0, 3.0 1.0, 3.0 0.0, 1.0 0.0, 1.0 1.0))'),
@@ -623,10 +623,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -647,10 +647,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_geom_linestring_length_sum(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 6.0]]
         geometries = [QgsGeometry.fromWkt('LINESTRING(1.0 1.0, 2.0 1.0)'),
                       QgsGeometry.fromWkt('LINESTRING(1.0 1.0, 3.0 1.0)'),
@@ -677,10 +677,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -701,10 +701,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_save_selected_unique(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row2', 'col1', 2.0], [3, 'row3', 'col1', 3.0], [4, 'row4', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -727,10 +727,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(sum_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -754,10 +754,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_dont_sortrow_one_columns(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -780,17 +780,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.verticalHeader()
-            qheaderview.setSortIndicator(3, Qt.DescendingOrder)
+            qheaderview.setSortIndicator(3, Qt.SortOrder.DescendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -808,10 +808,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_sortrow_two_columns(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0],
                 [5, 'row1', 'col2', 5.0], [6, 'row1', 'col2', 6.0], [7, 'row2', 'col2', 7.0], [8, 'row2', 'col2', 8.0]]
         self.create_vectorlayer(_fields, data)
@@ -835,17 +835,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.verticalHeader()
-            qheaderview.setSortIndicator(2, Qt.DescendingOrder)
+            qheaderview.setSortIndicator(2, Qt.SortOrder.DescendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -862,10 +862,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_sum_sortrow_two_columns_one_int(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         #data = [[1, 'row1', 'col1', 1.0], [2, 1.0, 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 2.0, 'col1', 4.0],
         #        [5, '1', 'col2', 5.0], [6, 1, 'col2', 6.0], [7, '2', 'col2', 7.0], [8, 'row2', 'col2', 8.0]]
         data = [[1, 'row1', 'col1', 1.0], [2, '1.0', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, '2.0', 'col1', 4.0],
@@ -892,17 +892,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.verticalHeader()
-            qheaderview.setSortIndicator(2, Qt.DescendingOrder)
+            qheaderview.setSortIndicator(2, Qt.SortOrder.DescendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -924,10 +924,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_sortrow_no_columns(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0],
                 [5, 'row1', 'col2', 5.0], [6, 'row1', 'col2', 6.0], [7, 'row2', 'col2', 7.0], [8, 'row2', 'col2', 8.0]]
         self.create_vectorlayer(_fields, data)
@@ -949,17 +949,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.verticalHeader()
-            qheaderview.setSortIndicator(2, Qt.DescendingOrder)
+            qheaderview.setSortIndicator(2, Qt.SortOrder.DescendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -976,10 +976,10 @@ class TestGroupStats(object):
              call.close()] in mock_file.mock_calls
 
     def test_sum_one_row(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -1002,10 +1002,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -1025,10 +1025,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_sum_no_row(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -1051,10 +1051,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -1077,10 +1077,10 @@ class TestGroupStats(object):
         Test that show panel runs without exception
         :return:
         """
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -1091,16 +1091,16 @@ class TestGroupStats(object):
         Test that show panel runs without exception
         :return:
         """
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
 
 
-        @mock.patch('PyQt5.QtWidgets.QMessageBox.information')
+        @mock.patch('qgis.PyQt.QtWidgets.QMessageBox.information')
         def __test(self, mock_messagebox):
             self.gs.dlg.ui.actionCopy.trigger()
             return mock_messagebox
@@ -1114,10 +1114,10 @@ class TestGroupStats(object):
         Test that show panel runs without exception
         :return:
         """
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -1137,7 +1137,7 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch('PyQt5.QtWidgets.QMessageBox.information')
+        @mock.patch('qgis.PyQt.QtWidgets.QMessageBox.information')
         def __test(self, mock_messagebox):
             getattr(self.gs.dlg, self.showScore)()
             self.gs.dlg.ui.actionCopy.trigger()
@@ -1154,10 +1154,10 @@ class TestGroupStats(object):
         assert test == '''cols\tcol1\rrows\t\rrow1\t3.0\rrow2\t7.0'''
 
     def test_sortrow_second_header_row(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0],
                 [5, 'row1', 'col2', 5.0], [6, 'row1', 'col2', 6.0], [7, 'row2', 'col2', 7.0], [8, 'row2', 'col2', 8.0]]
         self.create_vectorlayer(_fields, data)
@@ -1181,17 +1181,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.verticalHeader()
-            qheaderview.setSortIndicator(1, Qt.DescendingOrder)
+            qheaderview.setSortIndicator(1, Qt.SortOrder.DescendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -1207,10 +1207,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def __test_sortrow_one_row(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0],
                 [5, 'row1', 'col2', 5.0], [6, 'row1', 'col2', 6.0]]
         self.create_vectorlayer(_fields, data)
@@ -1234,17 +1234,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.horisontalHeader()
-            #qheaderview.setSortIndicator(2, Qt.DescendingOrder)
+            #qheaderview.setSortIndicator(2, Qt.SortOrder.DescendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -1262,10 +1262,10 @@ class TestGroupStats(object):
 
     def test_sum_xsd_int_type(self):
         """Test that WFS data type xsd:int can be used for calculation"""
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Int, 'xsd:int')]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Int, 'xsd:int')]
         data = [[1, 'row1', 'col1', 1.0], [2, 'row1', 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 'row2', 'col1', 4.0]]
         self.create_vectorlayer(_fields, data)
         self.init_gs()
@@ -1288,10 +1288,10 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
@@ -1311,10 +1311,10 @@ class TestGroupStats(object):
                  call.close()] in mock_file.mock_calls
 
     def test_sortcol_floats(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         #data = [[1, 'row1', 'col1', 1.0], [2, 1.0, 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 2.0, 'col1', 4.0],
         #        [5, '1', 'col2', 5.0], [6, 1, 'col2', 6.0], [7, '2', 'col2', 7.0], [8, 'row2', 'col2', 8.0]]
         data = [[1, 'row1', 'col1', 1.0],
@@ -1348,17 +1348,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.horizontalHeader()
-            qheaderview.setSortIndicator(2, Qt.AscendingOrder)
+            qheaderview.setSortIndicator(2, Qt.SortOrder.AscendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
@@ -1381,10 +1381,10 @@ class TestGroupStats(object):
 
 
     def test_sortcol_contains_None(self):
-        _fields = [QgsField('id', QVariant.Int, QVariant.typeToName(QVariant.Int)),
-                   QgsField('rows', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('cols', QVariant.String, QVariant.typeToName(QVariant.String)),
-                   QgsField('values', QVariant.Double, QVariant.typeToName(QVariant.Double))]
+        _fields = [QgsField('id', QMetaType.Type.Int, QMetaType.Type.Int.name),
+                   QgsField('rows', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('cols', QMetaType.Type.QString, QMetaType.Type.QString.name),
+                   QgsField('values', QMetaType.Type.Double, QMetaType.Type.Double.name)]
         #data = [[1, 'row1', 'col1', 1.0], [2, 1.0, 'col1', 2.0], [3, 'row2', 'col1', 3.0], [4, 2.0, 'col1', 4.0],
         #        [5, '1', 'col2', 5.0], [6, 1, 'col2', 6.0], [7, '2', 'col2', 7.0], [8, 'row2', 'col2', 8.0]]
         data = [[1, 'row1', 'col1', 1.0],
@@ -1418,17 +1418,17 @@ class TestGroupStats(object):
         self.values_model.dropMimeData(calc_data, None, 0, 0, self.values_model.index(0))
         self.values_model.dropMimeData(values_data, None, 0, 0, self.values_model.index(0))
 
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.selectedFiles")
-        @mock.patch('PyQt5.QtWidgets.QMainWindow.statusBar')
-        @mock.patch("PyQt5.QtWidgets.QMessageBox.information")
-        @mock.patch("PyQt5.QtWidgets.QFileDialog.exec_")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.selectedFiles")
+        @mock.patch('qgis.PyQt.QtWidgets.QMainWindow.statusBar')
+        @mock.patch("qgis.PyQt.QtWidgets.QMessageBox.information")
+        @mock.patch("qgis.PyQt.QtWidgets.QFileDialog.exec")
         @mock.patch("builtins.open")
         def savefile(dlg, mock_open, mock_exec, mock_messagebox, mock_statusbar, mock_selectedfile):
             mock_selectedfile.return_value = ['noname']
             mock_exec.return_value = 1
             getattr(self.gs.dlg, self.showScore)()
             qheaderview = self.gs.dlg.ui.result.horizontalHeader()
-            qheaderview.setSortIndicator(2, Qt.AscendingOrder)
+            qheaderview.setSortIndicator(2, Qt.SortOrder.AscendingOrder)
             #self.gs.dlg.sortRows(self, row, mode)
 
             mock_file = mock.MagicMock(spec=TextIOBase)
