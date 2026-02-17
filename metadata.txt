@@ -18,6 +18,7 @@ category=Vector
 homepage=https://github.com/HenrikSpa/GroupStats
 tracker=https://github.com/HenrikSpa/GroupStats/issues
 repository=https://github.com/HenrikSpa/GroupStats
+license=GPLv2
 
 icon=icon.png
 
