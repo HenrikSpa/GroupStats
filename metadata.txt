@@ -10,6 +10,7 @@ about=
 
 version=3.0.0
 qgisMinimumVersion=3.44
+qgisMaximumVersion=4.99
 
 # tags are comma separated with spaces allowed
 tags=stats,analysis,pivot table
