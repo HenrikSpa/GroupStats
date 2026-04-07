@@ -83,6 +83,7 @@ class GroupStatsDialog(QMainWindow):
         self.ui.actionTutorial.triggered.connect(self.showTutorial)   # Layer selection signal
 
         self.ui.result.verticalHeader().sortIndicatorChanged.connect(self.sortRows)   # Layer selection signal
+        self.index = -1     # Use a class attribute for selected layer in the dialog
 
 
     def sortRows(self, row, mode):
@@ -107,6 +108,8 @@ class GroupStatsDialog(QMainWindow):
 
     def showScore(self):               #finished
         "Performs calculations and sends them for display"
+        self.index = self.ui.layer.currentIndex()                                       # Set the index in the class attribute for later use
+
         chosenRows = tuple(self.tm2._data)                                               # Reading selected rows from the window
         chosenColumns = tuple(self.tm3._data)                                               # Reading selected columns from the window
         chosenValues = tuple(self.tm4._data)                                          # Reading from the window chosenj values ​​and calculations
@@ -320,31 +323,36 @@ class GroupStatsDialog(QMainWindow):
 
     def setLayers (self, layer):   #finished
         "Adds available layers to the selection list in the window"
+        toc_selected_layer = self.iface.activeLayer()
+        default_index = 0                                               # Default layer to index 0 if no previous selection
 
         index = self.ui.layer.currentIndex()
-        if index !=-1:
+        if self.index != -1:
             layerId = self.ui.layer.itemData(index)                        # id of the previously selected layer
 
         self.ui.layer.blockSignals(True)
         self.ui.layer.clear()                                            # fill the comboBox with a new list of layers
         layer.sort(key=lambda x: x[0].lower())
-        for i in layer:
-            self.ui.layer.addItem(i[0], i[1])
+        for i, l in enumerate(layer):
+            self.ui.layer.addItem(l[0], l[1])
+            if (l[1] == toc_selected_layer.id()):
+                default_index = self.ui.layer.findData(toc_selected_layer.id())
 
-        if index !=-1:
+        if self.index !=-1:
             index2 = self.ui.layer.findData(layerId)                       # if the previously selected layer is a list then select it
             if index2 !=-1:
                 self.ui.layer.setCurrentIndex(index2)
             else:
-                self.layerSelection(0)                                            # if it doesn't have the first one
+                self.layerSelection(default_index)                                            # if it doesn't have the one at default index
         else:
-            self.layerSelection(0)
+            self.ui.layer.setCurrentIndex(default_index)
+            self.layerSelection(default_index)                              # Use the default layer index in comboBox
+
         self.ui.layer.blockSignals(False)
 
 
     def layerSelection(self, index):     #finished
         "Runs after selecting layer from the list. Sets a new list of fields to choose from and deletes windows with already selected fields"
-
         idW = self.ui.layer.itemData(index)                          # Get the ID of the selected layer
         layer = QgsProject.instance().mapLayer(idW)#.toString())
         fields = layer.fields()
@@ -393,6 +401,9 @@ class GroupStatsDialog(QMainWindow):
 
         rows.sort(key=lambda x: x[1].lower())
         self.tm1.insertRows( 0, len(rows), QModelIndex(), rows)
+
+        if (self.sender() == self.ui.layer):            # Set the index if the selection in comboBox only if it's from a user action
+            self.index = index
 
         self.clearChoice()
 
